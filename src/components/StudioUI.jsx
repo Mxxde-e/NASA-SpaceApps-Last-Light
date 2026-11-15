@@ -38,6 +38,12 @@ export function ThemeToggle(){
   return <button className="studio-theme-toggle" type="button" aria-label={`Switch to ${theme==='light'?'dark':'light'} mode`} aria-pressed={theme==='dark'} onClick={()=>setTheme(t=>t==='light'?'dark':'light')}><StudioIcon name={theme==='light'?'moon':'sun'} size={17}/><span>{theme==='light'?'Dark':'Light'}</span></button>;
 }
 
+export function ReadabilityToggle(){
+  const [large,setLarge]=useState(()=>{try{return localStorage.getItem('last-light-readable')==='true';}catch{return false;}});
+  useEffect(()=>{document.documentElement.dataset.readable=String(large);try{localStorage.setItem('last-light-readable',String(large));}catch{}},[large]);
+  return <button type="button" className="studio-theme-toggle" aria-label="Larger text and controls" aria-pressed={large} onClick={()=>setLarge(v=>!v)}>Aa<span>{large?'Standard size':'Larger text'}</span></button>;
+}
+
 export const fieldHelp={
   originalLat:'Latitude of the original study point. Negative values are south of the lunar equator.',
   originalLon:'East-positive longitude of the original point. The point must fit inside the mapped study footprint.',

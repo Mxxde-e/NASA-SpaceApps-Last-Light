@@ -19,6 +19,8 @@ Detailed methods and validation are in [IMPROVEMENTS.md](IMPROVEMENTS.md). The O
 
 ## Open on this computer
 
+The chat can prepare real studies: ask for a date, provide the year, surface duration and ranking priority, review the settings, then **Calculate real options**. Choose **Autofill & run** to evaluate the selected coordinates/time in the main workspace. **Mic** fills an editable question before you send it. Browser support and permission are required for dictation. The top bar includes **Larger text and controls**; the workspace includes a keyboard skip link and a text/table alternative to the terrain and timeline. See [the planner and accessibility guide](docs/SITE_ASSISTANT.md), including configuration of the default `baidu/ernie-5.5-flash-preview:free` model. The calculator and structured planner also work without a model key.
+
 Double-click **Start-Last-Light.cmd**. It starts the local service and opens **http://127.0.0.1:8000** in your browser when terrain is ready. Keep its console open; close it or press Ctrl+C to stop. Port 8000 must be free. Dependencies and NASA data are already prepared in this checkout.
 
 If the browser does not open automatically, visit that address after the console reports that the server is running. The app has a Retry connection button while data loads.

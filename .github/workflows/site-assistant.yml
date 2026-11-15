@@ -21,7 +21,7 @@ jobs:
         with:
           node-version: '22'
       - run: pip install -r backend/requirements.lock.txt
-      - run: python -m pytest backend/tests/test_chat.py
+      - run: python -m pytest backend/tests/test_chat.py backend/tests/test_mission_chat.py
       - run: npm install --package-lock=false
       - run: npm test
       - run: npm run build

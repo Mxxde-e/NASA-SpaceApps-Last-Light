@@ -15,6 +15,7 @@ from fastapi.staticfiles import StaticFiles
 from .analysis import Engine,StudyRequest,ALGORITHM_VERSION
 from .terrain import ROOT,DATA
 from .chat import router as chat_router
+from .mission_chat import router as mission_chat_router
 
 executor=ThreadPoolExecutor(max_workers=1,thread_name_prefix='lunar-analysis')
 engine_future=None
@@ -31,6 +32,7 @@ async def lifespan(app):
 app=FastAPI(title='Last Light real-data regional study',version='4.0.0',lifespan=lifespan)
 
 app.include_router(chat_router)
+app.include_router(mission_chat_router)
 
 def engine():
     if engine_future is None or not engine_future.done(): raise HTTPException(503,'Loading real terrain and SPICE kernels. Please wait.')
