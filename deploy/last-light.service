@@ -1,0 +1,16 @@
+[Unit]
+Description=Last Light lunar navigator
+After=network-online.target
+[Service]
+User=ubuntu
+WorkingDirectory=/home/ubuntu/last-light
+ExecStart=/home/ubuntu/last-light/.venv/bin/uvicorn backend.server:app --host 127.0.0.1 --port 8000 --workers 1 --no-server-header
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=/home/ubuntu/last-light/data
+[Install]
+WantedBy=multi-user.target
