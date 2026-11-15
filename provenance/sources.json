@@ -1,0 +1,158 @@
+{
+  "assets": {
+    "terrain/elevation.tif": {
+      "url": "https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/Site01/Site01_final_adj_5mpp_surf.tif",
+      "sha256": "3ba7b97cb00a2bcf21189c3aeb535f65afc21207154ab9f0d43c5bdc1f7e747e",
+      "bytes": 40980810,
+      "retrievedUTC": "2026-11-15T00:52:24.361470+00:00",
+      "lastModified": "Fri, 05 Jun 2020 18:39:35 GMT"
+    },
+    "terrain/elevation_rms.tif": {
+      "url": "https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/Site01/Site01_final_adj_5mpp_toterr.tif",
+      "sha256": "cf2cf52f52d2aa51e60d058010d10b0ebfb1d3e920f5a2b9a46eb6c51054ab1c",
+      "bytes": 40980810,
+      "retrievedUTC": "2026-11-15T00:54:54.011333+00:00",
+      "lastModified": "Fri, 05 Jun 2020 18:39:48 GMT"
+    },
+    "terrain/slope.tif": {
+      "url": "https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/Site01/Site01_final_adj_5mpp_slp.tif",
+      "sha256": "3a90035a4946b4a04b7332c52f0b2b1cff71648bd8c105e14d8a7e15c6bcfe8e",
+      "bytes": 40980776,
+      "retrievedUTC": "2026-11-15T00:56:46.742678+00:00",
+      "lastModified": "Mon, 08 Jun 2020 22:05:45 GMT"
+    },
+    "terrain/slope_rms.tif": {
+      "url": "https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/Site01/Site01_final_adj_5mpp_slperr.tif",
+      "sha256": "52bc3b239f61605e6bb98bab6d6b17acd22389c59e57336862157f2fbd643a33",
+      "bytes": 40980810,
+      "retrievedUTC": "2026-11-15T00:58:45.755959+00:00",
+      "lastModified": "Fri, 05 Jun 2020 18:39:55 GMT"
+    },
+    "terrain/return_count.tif": {
+      "url": "https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/Site01/Site01_final_adj_5mpp_ldec.tif",
+      "sha256": "16d6ed21020ad48fa71d94e7437492acf5bf04118f52bcd292f57f22ead4cd23",
+      "bytes": 40980744,
+      "retrievedUTC": "2026-11-15T01:00:56.173593+00:00",
+      "lastModified": "Fri, 05 Jun 2020 18:39:41 GMT"
+    },
+    "terrain/README.txt": {
+      "url": "https://pgda.gsfc.nasa.gov/data/LOLA_5mpp/README",
+      "sha256": "e985a2337c9de1cd665b0ddad8b7f1fac88d65c96d1e47d1b975a91c8e53e7bd",
+      "bytes": 1829,
+      "retrievedUTC": "2026-11-15T01:00:57.636753+00:00",
+      "lastModified": "Tue, 07 Dec 2021 14:28:07 GMT"
+    },
+    "kernels/de421.bsp": {
+      "url": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/planets/a_old_versions/de421.bsp",
+      "sha256": "08b20db2ae22488650641c5a9033e5bfda4b1c4b440cfeaf20f621cfa18ecdb3",
+      "bytes": 16790528,
+      "retrievedUTC": "2026-11-15T01:01:08.481865+00:00",
+      "lastModified": "Tue, 08 Apr 2008 21:07:58 GMT"
+    },
+    "kernels/moon_pa_de421_1900-2050.bpc": {
+      "url": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/moon_pa_de421_1900-2050.bpc",
+      "sha256": "656f90616403d75a75f0cd6c8830fc5b44f8cb4facb5ccb8915e752b397520cf",
+      "bytes": 1770496,
+      "retrievedUTC": "2026-11-15T01:01:10.162871+00:00",
+      "lastModified": "Wed, 19 Mar 2008 04:51:40 GMT"
+    },
+    "kernels/moon_080317.tf": {
+      "url": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/fk/satellites/moon_080317.tf",
+      "sha256": "78732477b96f9863e7b0d65bcee3c22b8707ca5ed0db56d1173319cb2e8c7993",
+      "bytes": 21437,
+      "retrievedUTC": "2026-11-15T01:01:11.159951+00:00",
+      "lastModified": "Thu, 18 Jul 2013 10:07:49 GMT"
+    },
+    "kernels/naif0012.tls": {
+      "url": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/lsk/naif0012.tls",
+      "sha256": "678e32bdb5a744117a467cd9601cd6b373f0e9bc9bbde1371d5eee39600a039b",
+      "bytes": 5257,
+      "retrievedUTC": "2026-11-15T01:01:12.049512+00:00",
+      "lastModified": "Fri, 15 Jul 2016 00:00:37 GMT"
+    },
+    "kernels/pck00011.tpc": {
+      "url": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+      "sha256": "3dff7b1dbeceaa01f25467767d3fa25816051c85d162d1edf04acb310ee28bb1",
+      "bytes": 131226,
+      "retrievedUTC": "2026-11-15T01:01:13.220584+00:00",
+      "lastModified": "Tue, 27 Dec 2022 16:28:50 GMT"
+    },
+    "terrain/surrounding.img": {
+      "url": "https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/polar/img/ldem_85s_40m.img",
+      "sha256": "1609e9b860748e0b9952a7239c51b37d3b2a799d35e9fc3c258526711cc1e51d",
+      "bytes": 115034112,
+      "retrievedUTC": "2026-11-15T01:01:52.013547+00:00",
+      "lastModified": "Thu, 06 Jul 2017 13:55:57 GMT"
+    },
+    "terrain/surrounding.lbl": {
+      "url": "https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/polar/img/ldem_85s_40m.lbl",
+      "sha256": "d8105776af7fb79b1862ffa3946d013ec34f4dc6a00b7f6bff22ef8f768a5d3d",
+      "bytes": 4986,
+      "retrievedUTC": "2026-11-15T01:01:52.552379+00:00",
+      "lastModified": "Fri, 02 Jun 2017 15:58:56 GMT"
+    },
+    "terrain/global.img": {
+      "url": "https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/cylindrical/img/ldem_16.img",
+      "sha256": "a511e40d7a3ea3275945b4da2a1df377133264fab0be94b7434b1cf8907254cb",
+      "bytes": 33177600,
+      "retrievedUTC": "2026-11-15T01:02:03.813723+00:00",
+      "lastModified": "Mon, 04 Mar 2019 20:54:37 GMT"
+    },
+    "terrain/global.lbl": {
+      "url": "https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/cylindrical/img/ldem_16.lbl",
+      "sha256": "9aef29463ccc6ed3a3fbe0df3ecd830a99c69e16b564f455507dee2697096579",
+      "bytes": 5121,
+      "retrievedUTC": "2026-11-15T01:02:04.286341+00:00",
+      "lastModified": "Mon, 04 Mar 2019 20:54:44 GMT"
+    },
+    "screening/solar.img": {
+      "url": "https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/extras/illumination/img/avgvisib_85s_060m_201608.img",
+      "sha256": "82dadf321dee28f1947c1fed81858d4cf50fe8eb2aa405aae114e8ab21c1efe1",
+      "bytes": 51166728,
+      "retrievedUTC": "2026-11-15T01:48:29.026582+00:00",
+      "lastModified": "Thu, 15 Sep 2016 03:59:08 GMT"
+    },
+    "screening/solar.lbl": {
+      "url": "https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/extras/illumination/img/avgvisib_85s_060m_201608.lbl",
+      "sha256": "33decce957d5d4d9608557d8d969d1e1b94056a159b2563624ade4b528a0c917",
+      "bytes": 4094,
+      "retrievedUTC": "2026-11-15T01:48:29.530042+00:00",
+      "lastModified": "Mon, 16 Oct 2023 15:31:13 GMT"
+    },
+    "screening/earth.img": {
+      "url": "https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/extras/illumination/img/avgvisib_85s_060m_201608_earth.img",
+      "sha256": "0958313069d6039b2474c875ff662f28dbcba2bd853d9ea458aa807b7948c11f",
+      "bytes": 51166728,
+      "retrievedUTC": "2026-11-15T01:48:46.931023+00:00",
+      "lastModified": "Thu, 15 Sep 2016 04:23:22 GMT"
+    },
+    "screening/earth.lbl": {
+      "url": "https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/extras/illumination/img/avgvisib_85s_060m_201608_earth.lbl",
+      "sha256": "45a61697d779fdb9170bca2553f9e0188aeda1159811d3531c348df8f57f68bd",
+      "bytes": 4111,
+      "retrievedUTC": "2026-11-15T01:48:47.430945+00:00",
+      "lastModified": "Mon, 16 Oct 2023 15:31:13 GMT"
+    },
+    "screening/shadow.img": {
+      "url": "https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/extras/illumination/img/lpsr_85s_060m_201608.img",
+      "sha256": "f8203cab342c817fc7851431e264def3cc64a3b8c30f032d61e0a44f1e4ef761",
+      "bytes": 51166728,
+      "retrievedUTC": "2026-11-15T01:49:04.869296+00:00",
+      "lastModified": "Thu, 15 Sep 2016 03:59:12 GMT"
+    },
+    "screening/shadow.lbl": {
+      "url": "https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/extras/illumination/img/lpsr_85s_060m_201608.lbl",
+      "sha256": "42ae7cb0ae64ff8df7a17106228921bd07eb9afba8fb833c4a8cfd2f53487c0f",
+      "bytes": 3914,
+      "retrievedUTC": "2026-11-15T01:49:05.380630+00:00",
+      "lastModified": "Mon, 16 Oct 2023 15:31:13 GMT"
+    },
+    "screening/README.txt": {
+      "url": "https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/extras/illumination/readme_illumination_2016.txt",
+      "sha256": "f806f9c7fb410b17dd75c2f44f91755b5ca890ac047004a1e8fbb819c24b9ec6",
+      "bytes": 2016,
+      "retrievedUTC": "2026-11-15T01:49:05.865400+00:00",
+      "lastModified": "Fri, 01 Dec 2023 14:31:25 GMT"
+    }
+  }
+}

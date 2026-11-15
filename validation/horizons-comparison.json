@@ -1,0 +1,12 @@
+{
+  "sun": {
+    "samples": 25,
+    "maxAzErrorDeg": 2.6803928108165564e-06,
+    "maxElevationErrorDeg": 8.130986326015943e-06
+  },
+  "earth": {
+    "samples": 25,
+    "maxAzErrorDeg": 3.7873022336043505e-06,
+    "maxElevationErrorDeg": 6.894355117914586e-06
+  }
+}

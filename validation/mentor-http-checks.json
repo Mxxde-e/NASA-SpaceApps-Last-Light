@@ -1,0 +1,26 @@
+{
+  "status": "passed",
+  "checks": [
+    "22 checksum-tracked sources",
+    "actual NASA reference-pixel values",
+    "four distinct PNG layers",
+    "invalid layer rejected",
+    "invalid panel area rejected",
+    "invalid Earth definition rejected",
+    "tracked versus fixed panel energy",
+    "mandatory ground unknowns",
+    "NASA-only empty screening",
+    "dataset-filtered real-coordinate candidates",
+    "repeat cache"
+  ],
+  "trackedSolarEnergyWh": [
+    1777.0860282689466,
+    1777.0860282689466
+  ],
+  "fixedHorizontalSolarEnergyWh": [
+    41.84457986738891,
+    41.84457986738891
+  ],
+  "candidateSearchSeconds": 5.897116699998151,
+  "repeatCacheSeconds": 0.15221990000281949
+}

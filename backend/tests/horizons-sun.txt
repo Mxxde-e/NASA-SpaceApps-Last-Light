@@ -1,0 +1,228 @@
+Skip Navigation
+NASA
+JPL
+Caltech
+Home
+About
+ 
+Orbits &
+Ephemerides 
+Planets
+ 
+Planetary
+Satellites 
+Small Bodies
+ 
+Tools
+ 
+Extras
+ 
+Home Tools Horizons System
+Horizons System
+About
+App
+Manual
+Tutorial
+Time Spans
+News
+Horizons Web Application
+Save/Load Settings...
+Set Defaults
+Ephemeris Type: 
+Observer Table
+Vector Table
+Osculating Orbital Elements
+Small-Body SPK File
+1
+Target Body: Sun [Sol]
+2 Edit
+Observer Location: -137.50198°E, -89.46316°N, 1.946761474609375 km @301 (Moon [Luna])
+3 Edit
+Time Specification: Start=2026-11-15 06:00 UT , Stop=2026-11-16 06:00, Step=1 (hours)
+4 Edit
+Table Settings: custom
+5 Edit
+
+After specifying settings above (items 1 to 5), generate an ephemeris by pressing the "Generate Ephemeris" button below. If you plan to use one of the "batch" modes to access Horizons, the batch-file corresponding to the settings above can be viewed by using this link.
+
+Generate Ephemeris
+Ephemeris Results
+Delete
+Download Results 
+*******************************************************************************
+ Revised: July 31, 2013                  Sun                                 10
+
+ PHYSICAL PROPERTIES (updated 2024-Oct-30):
+  GM, km^3/s^2          = 132712440041.93938  Mass, 10^24 kg        = ~1988410
+  Vol. mean radius, km  = 695700              Volume, 10^12 km^3    = 1412000
+  Solar radius (IAU2015)= 695700 km           Mean density, g/cm^3  = 1.408
+  Radius (photosphere)  = 696500 km           Angular diam at 1 AU  = 1919.3"
+  Photosphere temp., K  = 6600 (bottom)       Photosphere temp., K  = 4400(top)
+  Photospheric depth    = ~500 km             Chromospheric depth   = ~2500 km
+  Flatness, f           = 0.00005             Adopted sid. rot. per.= 25.38 d
+  Surface gravity       =  274.0 m/s^2        Escape speed, km/s    =  617.7
+  Pole (RA,DEC), deg.   = (286.13, 63.87)     Obliquity to ecliptic = 7.25 deg.
+  Solar constant (1 AU) = 1367.6 W/m^2        Luminosity, 10^24 J/s = 382.8
+  Mass-energy conv rate = 4.260 x 10^9 kg/s   Effective temp, K     = 5772
+  Sunspot cycle         = 11.4 yr             Cycle 24 sunspot min. = 2008 A.D.
+
+  Motion relative to nearby stars = apex : R.A.= 271 deg.; DEC.= +30 deg.
+                                    speed: 19.4 km/s (0.0112 au/day)
+  Motion relative to 2.73K BB/CBR = apex : l= 264.7 +- 0.8; b= 48.2 +- 0.5 deg.
+                                    speed: 369 +-11 km/s
+*******************************************************************************
+
+
+*******************************************************************************
+Ephemeris / WWW_USER Sat Nov 14 17:18:32 2026 Pasadena, USA      / Horizons    
+*******************************************************************************
+Target body name: Sun (10)                        {source: DE441}
+Center body name: Moon (301)                      {source: DE441}
+Center-site name: (user defined site below)
+*******************************************************************************
+Start time      : A.D. 2026-Nov-15 06:00:00.0000 UT      
+Stop  time      : A.D. 2026-Nov-16 06:00:00.0000 UT      
+Step-size       : 60 minutes
+*******************************************************************************
+Target pole/equ : IAU_SUN                         {East-longitude positive}
+Target radii    : 695700.0, 695700.0, 695700.0 km {Equator_a, b, pole_c}       
+Center geodetic : 222.49802, -89.46316, 1.94676   {E-lon(deg),Lat(deg),Alt(km)}
+Center cylindric: 222.49802, 16.29679, -1739.27   {E-lon(deg),Dxy(km),Dz(km)}
+Center pole/equ : MEAN_ME (high precision)        {East-longitude positive}
+Center radii    : 1737.4, 1737.4, 1737.4 km       {Equator_a, b, pole_c}       
+Target primary  : Sun
+Vis. interferer : EARTH (R_eq= 6378.137) km       {source: DE441}
+Rel. light bend : Sun, EARTH                      {source: DE441}
+Rel. lght bnd GM: 1.3271E+11, 3.9860E+05 km^3/s^2                              
+Atmos refraction: NO (AIRLESS)
+RA format       : HMS
+Time format     : CAL 
+Calendar mode   : Mixed Julian/Gregorian
+EOP file        : eop.261113.p270209                                           
+EOP coverage    : DATA-BASED 1962-JAN-20 TO 2026-NOV-13. PREDICTS-> 2027-FEB-08
+Units conversion: 1 au= 149597870.700 km, c= 299792.458 km/s, 1 day= 86400.0 s 
+Table cut-offs 1: Elevation (-90.0deg=NO ),Airmass     n.a.    , Daylight (NO )
+Table cut-offs 2: Solar elongation (  0.0,180.0=NO ),Local Hour Angle( 0.0=NO )
+Table cut-offs 3: RA/DEC angular rate (     0.0=NO )                           
+*******************************************************************************
+ Date__(UT)__HR:MN     Azimuth__(a-app)__Elevation
+**************************************************
+$$SOE
+ 2026-Nov-15 06:00 *   248.874881969   1.362711563
+ 2026-Nov-15 07:00 *i  248.367375699   1.358241848
+ 2026-Nov-15 08:00 *i  247.859880799   1.353786272
+ 2026-Nov-15 09:00 *i  247.352397299   1.349345197
+ 2026-Nov-15 10:00 *i  246.844925231   1.344918983
+ 2026-Nov-15 11:00 *i  246.337464622   1.340507990
+ 2026-Nov-15 12:00 *i  245.830015503   1.336112575
+ 2026-Nov-15 13:00 *i  245.322577901   1.331733093
+ 2026-Nov-15 14:00 *i  244.815151846   1.327369900
+ 2026-Nov-15 15:00 *i  244.307737364   1.323023348
+ 2026-Nov-15 16:00 *i  243.800334483   1.318693788
+ 2026-Nov-15 17:00 *i  243.292943231   1.314381572
+ 2026-Nov-15 18:00 *i  242.785563632   1.310087045
+ 2026-Nov-15 19:00 *i  242.278195713   1.305810557
+ 2026-Nov-15 20:00 *i  241.770839500   1.301552450
+ 2026-Nov-15 21:00 *i  241.263495018   1.297313068
+ 2026-Nov-15 22:00 *i  240.756162291   1.293092753
+ 2026-Nov-15 23:00 *i  240.248841342   1.288891843
+ 2026-Nov-16 00:00 *i  239.741532197   1.284710678
+ 2026-Nov-16 01:00 *i  239.234234878   1.280549592
+ 2026-Nov-16 02:00 *i  238.726949407   1.276408921
+ 2026-Nov-16 03:00 *i  238.219675808   1.272288995
+ 2026-Nov-16 04:00 *i  237.712414102   1.268190146
+ 2026-Nov-16 05:00 *i  237.205164310   1.264112701
+ 2026-Nov-16 06:00 *i  236.697926453   1.260056987
+$$EOE
+*******************************************************************************
+Column meaning:
+ 
+TIME
+
+  Times PRIOR to 1962 are UT1, a mean-solar time closely related to the
+prior but now-deprecated GMT. Times AFTER 1962 are in UTC, the current
+civil or "wall-clock" time-scale. UTC is kept within 0.9 seconds of UT1
+using integer leap-seconds for 1972 and later years.
+
+  Conversion from the internal Barycentric Dynamical Time (TDB) of solar
+system dynamics to the non-uniform civil UT time-scale requested for output
+has not been determined for UTC times after the next July or January 1st.
+Therefore, the last known leap-second is used as a constant over future
+intervals.
+
+  Time tags refer to the UT time-scale conversion from TDB on Earth
+regardless of observer location within the solar system, although clock
+rates may differ due to the local gravity field and no analog to "UT"
+may be defined for that location.
+
+  Any 'b' symbol in the 1st-column denotes a B.C. date. First-column blank
+(" ") denotes an A.D. date.
+ 
+CALENDAR SYSTEM
+
+  Mixed calendar mode was active such that calendar dates after AD 1582-Oct-15
+(if any) are in the modern Gregorian system. Dates prior to 1582-Oct-5 (if any)
+are in the Julian calendar system, which is automatically extended for dates
+prior to its adoption on 45-Jan-1 BC.  The Julian calendar is useful for
+matching historical dates. The Gregorian calendar more accurately corresponds
+to the Earth's orbital motion and seasons. A "Gregorian-only" calendar mode is
+available if such physical events are the primary interest.
+
+  NOTE: "n.a." in output means quantity "not available" at the print-time.
+ 
+SOLAR PRESENCE (OBSERVING SITE)
+  Time tag is followed by a blank, then a solar-presence symbol:
+
+       '*'  Daylight (solar upper-limb on or above apparent horizon)
+       ' '  Night OR body-centered ephemeris
+
+INTERFERING BODY PRESENCE (OBSERVING SITE)
+  The solar-presence symbol is immediately followed by an "interfering body"
+presence symbol.
+
+       'i'  Upper-limb of interfering body on or above apparent horizon
+       ' '  Upper-limb of interfering body below apparent horizon OR body
+              centered ephemeris.
+
+  An "interfering body" is the largest other body in the immediate
+planet/satellite system, potentially compromising visual observations due to
+its brightness. Any such body is identified in the print-out header.
+ 
+ 'Azimuth__(a-app)__Elevation' =
+  Airless apparent azimuth and elevation of target center. Compensated
+for light-time, the gravitational deflection of light, stellar aberration,
+precession and nutation. Azimuth is measured clockwise from north:
+
+  North(0) -> East(90) -> South(180) -> West(270) -> North (360)
+
+Elevation angle is with respect to a plane perpendicular to the reference
+surface local zenith direction. TOPOCENTRIC ONLY.  Units: DEGREES
+
+Computations by ...
+
+    Solar System Dynamics Group, Horizons On-Line Ephemeris System
+    4800 Oak Grove Drive, Jet Propulsion Laboratory
+    Pasadena, CA  91109   USA
+
+    General site: https://ssd.jpl.nasa.gov/
+    Mailing list: https://ssd.jpl.nasa.gov/email_list.html
+    System news : https://ssd.jpl.nasa.gov/horizons/news.html
+    User Guide  : https://ssd.jpl.nasa.gov/horizons/manual.html
+    Connect     : browser        https://ssd.jpl.nasa.gov/horizons/app.html#/x
+                  API            https://ssd-api.jpl.nasa.gov/doc/horizons.html
+                  command-line   telnet ssd.jpl.nasa.gov 6775
+                  e-mail/batch   https://ssd.jpl.nasa.gov/ftp/ssd/horizons_batch.txt
+                  scripts        https://ssd.jpl.nasa.gov/ftp/ssd/SCRIPTS
+    Inquiries   : Jon.D.Giorgini@jpl.nasa.gov
+
+*******************************************************************************
+
+Download Results 
+ Site Map
+ Privacy
+ Image Policy
+ Contact Us
+Site Manager: Ryan Park
+Site Design: Alan B. Chamberlin
+URS Clearance: CL#21-4165
+The JPL Solar System Dynamics group’s ephemeris development, maintenance, and improvement tasks are primarily supported by NASA’s Advanced Multi-Mission Operations System, which is funded by NASA’s Science Mission Directorate .
