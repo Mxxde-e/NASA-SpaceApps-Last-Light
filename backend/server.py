@@ -14,6 +14,7 @@ from fastapi.responses import Response
 from fastapi.staticfiles import StaticFiles
 from .analysis import Engine,StudyRequest,ALGORITHM_VERSION
 from .terrain import ROOT,DATA
+from .chat import router as chat_router
 
 executor=ThreadPoolExecutor(max_workers=1,thread_name_prefix='lunar-analysis')
 engine_future=None
@@ -28,6 +29,8 @@ async def lifespan(app):
     executor.shutdown(wait=False,cancel_futures=True)
 
 app=FastAPI(title='Last Light real-data regional study',version='3.0.0',lifespan=lifespan)
+
+app.include_router(chat_router)
 
 def engine():
     if engine_future is None or not engine_future.done(): raise HTTPException(503,'Loading real terrain and SPICE kernels. Please wait.')
@@ -95,3 +98,4 @@ if (ROOT/'dist').exists(): app.mount('/',StaticFiles(directory=ROOT/'dist',html=
 if __name__=='__main__':
     import uvicorn
     uvicorn.run('backend.server:app',host='127.0.0.1',port=8000,workers=1)
+

@@ -3,6 +3,7 @@ Description=Last Light lunar navigator
 After=network-online.target
 [Service]
 User=ubuntu
+EnvironmentFile=-/etc/last-light-chat.env
 WorkingDirectory=/home/ubuntu/last-light
 ExecStart=/home/ubuntu/last-light/.venv/bin/uvicorn backend.server:app --host 127.0.0.1 --port 8000 --workers 1 --no-server-header
 Restart=on-failure
@@ -14,3 +15,4 @@ ProtectHome=read-only
 ReadWritePaths=/home/ubuntu/last-light/data
 [Install]
 WantedBy=multi-user.target
+

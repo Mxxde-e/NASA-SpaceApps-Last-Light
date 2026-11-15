@@ -21,7 +21,7 @@ export default function NasaScreening({info,point,candidates,onPick,onSelect,sel
   const mapped=markers.filter((m,i)=>markers.findIndex(n=>samePoint(m,n))===i).map(m=>active&&samePoint(active,m)?active:m);
   const data=active?.point.nasa;
   const xy=p=>[100*(p.x-bounds[0])/(bounds[2]-bounds[0]),100*(bounds[3]-p.y)/(bounds[3]-bounds[1])];
-  return <section className="panel real-map-panel nasa-panel"><div className="section-head"><h2>Start with NASA's maps</h2><span className="quiet-tag">5 × 5 KM STUDY FOOTPRINT</span></div>
+  return <section id="assistant-terrain" tabIndex="-1" className="panel real-map-panel nasa-panel"><div className="section-head"><h2>Start with NASA's maps</h2><span className="quiet-tag">5 × 5 KM STUDY FOOTPRINT</span></div>
     <div className="nasa-layer-picker" role="group" aria-label="Map layer">{Object.entries(layers).map(([id,label])=><button key={id} aria-pressed={layer===id} onClick={()=>setLayer(id)}>{label}</button>)}</div>
     <div className={`real-map ${busy?'busy':''}`} onClick={e=>{if(busy)return;const r=e.currentTarget.getBoundingClientRect();onPick(bounds[0]+(e.clientX-r.left)/r.width*(bounds[2]-bounds[0]),bounds[3]-(e.clientY-r.top)/r.height*(bounds[3]-bounds[1]));}} role="group" aria-label="NASA screening map; click to choose original point, or use latitude and longitude fields">
       <img src={`/api/map.png?layer=${layer}&v=3`} alt={layer==='terrain'?'Hillshade from actual 5 m NASA LOLA elevations':`${layers[layer]}: actual archived 60 m source pixels with illustrative hillshade`}/>
@@ -51,3 +51,4 @@ export function NasaMethod({info}){
     <p>Source citation: {info.screening.citation}.</p>
   </div>;
 }
+

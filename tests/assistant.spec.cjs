@@ -1,0 +1,40 @@
+const {test,expect}=require('@playwright/test');
+test('guide replies, navigation, and keyboard close work',async({page})=>{
+ await page.goto('/');
+ await page.getByRole('button',{name:'Simulated demo',exact:true}).click();
+ await page.getByRole('button',{name:'Ask Last Light',exact:true}).click();
+ const dialog=page.getByRole('dialog',{name:'Ask Last Light'});
+ await expect(dialog).toBeVisible();
+ await expect(page.getByLabel('Ask about this website')).toBeFocused();
+ await dialog.getByRole('button',{name:'Where should I start?',exact:true}).click();
+ await expect(dialog.getByText('Verified site guide',{exact:true})).toBeVisible();
+ await dialog.getByRole('button',{name:'Go to mission setup',exact:false}).click();
+ await expect(dialog).not.toBeVisible();
+ await page.getByRole('button',{name:'Ask Last Light',exact:true}).click();
+ await page.keyboard.press('Escape');
+ await expect(dialog).not.toBeVisible();
+ await expect(page.getByRole('button',{name:'Ask Last Light',exact:true})).toBeFocused();
+});
+test('model outage falls back, HTML stays text, and clear chat works',async({page})=>{
+ await page.route('**/api/chat',route=>route.fulfill({status:503,body:'unavailable'}));
+ await page.goto('/');
+ await page.getByRole('button',{name:'Ask Last Light',exact:true}).click();
+ const dialog=page.getByRole('dialog',{name:'Ask Last Light'});
+ await page.getByLabel('Ask about this website').fill('<img src=x onerror=alert(1)>');
+ await dialog.getByRole('button',{name:'Send',exact:true}).click();
+ await expect(dialog.getByText('AI connection unavailable. Site help still works.')).toBeVisible();
+ await expect(dialog.locator('img')).toHaveCount(0);
+ await expect(dialog.getByText('<img src=x onerror=alert(1)>',{exact:true})).toBeVisible();
+ await dialog.getByRole('button',{name:'Clear chat',exact:true}).click();
+ await expect(dialog.getByText('<img src=x onerror=alert(1)>',{exact:true})).toHaveCount(0);
+});
+test('mobile panel fits and data mode change clears history',async({page})=>{
+ await page.setViewportSize({width:390,height:844});await page.goto('/');
+ await page.getByRole('button',{name:'Ask Last Light',exact:true}).click();
+ const dialog=page.getByRole('dialog',{name:'Ask Last Light'});
+ await dialog.getByRole('button',{name:'Real or simulated data?',exact:true}).click();
+ await expect(dialog.getByText('Verified site guide',{exact:true})).toBeVisible();
+ const box=await dialog.boundingBox();expect(box.x).toBeGreaterThanOrEqual(0);expect(box.x+box.width).toBeLessThanOrEqual(390);
+ await page.getByRole('button',{name:'Simulated demo',exact:true}).click();
+ await expect(dialog.getByText('Verified site guide',{exact:true})).toHaveCount(0);
+});
