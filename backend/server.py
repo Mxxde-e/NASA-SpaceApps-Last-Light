@@ -28,7 +28,7 @@ async def lifespan(app):
     yield
     executor.shutdown(wait=False,cancel_futures=True)
 
-app=FastAPI(title='Last Light real-data regional study',version='3.0.0',lifespan=lifespan)
+app=FastAPI(title='Last Light real-data regional study',version='4.0.0',lifespan=lifespan)
 
 app.include_router(chat_router)
 
@@ -55,6 +55,15 @@ def map_image(layer:str='terrain'):
 def point(lon:float,lat:float):
     try: return engine().point(lon,lat)
     except ValueError as error: raise HTTPException(422,str(error))
+
+@app.get('/api/terrain-mesh')
+def terrain_mesh():
+    return engine().terrain.display_mesh()
+
+@app.get('/api/evidence')
+def evidence():
+    from .evidence import geometry_evidence
+    return geometry_evidence(engine().geometry)
 
 def run_job(identifier,request):
     try:
@@ -98,4 +107,3 @@ if (ROOT/'dist').exists(): app.mount('/',StaticFiles(directory=ROOT/'dist',html=
 if __name__=='__main__':
     import uvicorn
     uvicorn.run('backend.server:app',host='127.0.0.1',port=8000,workers=1)
-

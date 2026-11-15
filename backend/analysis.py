@@ -9,8 +9,10 @@ from .geometry import Geometry,parse_utc,iso_utc
 from .numerics import circular_interpolate,visibility,integrate_battery,longest_interval,great_circle_m,refine_zero
 from .screening import Screening
 from .solar import panel_power
+from .ranking import PRIORITIES,rank_candidates
+from collections import Counter
 
-ALGORITHM_VERSION='real-v3.1'
+ALGORITHM_VERSION='real-v4.0'
 
 class StudyRequest(BaseModel):
     originalLat:float=Field(default=-89.46316,ge=-90,le=90)
@@ -47,6 +49,7 @@ class StudyRequest(BaseModel):
     panelAzimuthDeg:float=Field(default=0,ge=0,le=360)
     panelTracking:str='sun'
     irradianceAt1AU:float=Field(default=1361,ge=0,le=2000)
+    rankingPriority:str='schedule'
 
     @model_validator(mode='after')
     def date_and_mode_validation(self):
@@ -57,6 +60,7 @@ class StudyRequest(BaseModel):
         if self.powerModel not in ('constant','panel'): raise ValueError('Choose constant or panel power.')
         if self.panelTracking not in ('sun','fixed'): raise ValueError('Choose fixed pointing or ideal Sun tracking.')
         if self.earthVisibilityMode not in ('centre','any'): raise ValueError('Choose Earth centre or any-disc visibility.')
+        if self.rankingPriority not in PRIORITIES: raise ValueError('Choose schedule, power, communication or relocation priority.')
         if self.excludeOriginal and self.changeType=='time': raise ValueError('An excluded original location requires a site change.')
         for t in [a,b,c]:
             if abs(t/60-round(t/60))>1e-6: raise ValueError('Use whole-minute UTC landing times.')
@@ -216,7 +220,7 @@ class Engine:
         origin_series=build_series(self.geometry,origin,request.observerHeightM,origin_horizon,origin_time,origin_time+request.durationH*3600,request=request)
         original=evaluate_series(origin,origin_horizon,origin_series,origin_time,request,ov,ou,origin_time)
         original=self.decorate(original,origin_horizon,request,'O')
-        points=[]; screened=0; nasa_rejected=0
+        points=[]; screened=0; nasa_rejected=0; rejected=Counter()
         if request.changeType=='time': points=[(origin,ov,ou)]
         else:
             xmin,ymin,xmax,ymax=PATCH_BOUNDS
@@ -229,12 +233,15 @@ class Engine:
                     # NASA averages are a screening gate before expensive terrain/geometry.
                     nasa=self.screening.point({'x':float(x),'y':float(y)})
                     nv,nu=self.nasa_requirements({'nasa':nasa},request)
-                    if nv or nu: nasa_rejected+=1; continue
+                    if nv or nu:
+                        nasa_rejected+=1; rejected.update(set(nv+nu)); continue
                     try: point=self.point(lon,lat)
-                    except ValueError: continue
+                    except ValueError:
+                        rejected.update(['Missing or unsupported local terrain patch.']); continue
                     point['relocationM']=dist
                     point,v,u=self.terrain_requirements(point,request,components)
-                    if v or u: continue # filter mandatory available-data limitations before shortlisting
+                    if v or u:
+                        rejected.update(set(v+u)); continue # filter before shortlisting
                     points.append((point,v,u))
             points.sort(key=lambda p:p[0]['relocationM'])
             # Distinct areas and a bounded analysis budget; this is not an exhaustive optimizer.
@@ -257,7 +264,8 @@ class Engine:
                 evaluated+=1
                 result=evaluate_series(point,horizon,series,landing,request,pv,pu,origin_time)
                 if result['selectedLimitsPass']: candidates.append((result,horizon))
-        candidates.sort(key=lambda pair:(abs(pair[0]['scheduleShiftH']),pair[0]['point']['relocationM'],-pair[0]['metrics']['batteryMinimumPercent'][0]))
+                else: rejected.update(set(result['violations']+result['uncertainRequirements']))
+        candidates=rank_candidates(candidates,request.rankingPriority)
         distinct=[]
         for item in candidates:
             p=item[0]['point']
@@ -265,10 +273,15 @@ class Engine:
             distinct.append(item)
             if len(distinct)==3: break
         options=[self.decorate(s,h,request,f'R{i+1}') for i,(s,h) in enumerate(distinct)]
+        for rank,option in enumerate(options,1):
+            option['ranking']={'position':rank,'priority':request.rankingPriority,'criteria':PRIORITIES[request.rankingPriority],
+                               'scope':'Passing scenarios in this bounded search; up to three spatially distinct areas.'}
         now=datetime.now(timezone.utc).isoformat().replace('+00:00','Z')
         return {'algorithmVersion':ALGORITHM_VERSION,'computedUTC':now,'elapsedSeconds':time.perf_counter()-began,'request':request.model_dump(),
                 'original':original,'candidates':options,'qualifyingCount':0 if request.requireKnownGround else len(options),
                 'screenedGridPoints':screened,'nasaRejectedGridPoints':nasa_rejected,'geometryLocations':len(points)+(0 if request.changeType=='time' else 1),'evaluatedScenarios':evaluated,
+                'ranking':{'priority':request.rankingPriority,'criteria':PRIORITIES[request.rankingPriority],'passingEvaluatedScenarios':len(candidates)},
+                'rejectionReasons':[{'reason':reason,'count':count} for reason,count in rejected.most_common()],
                 'notes':['Candidates are real coordinates, not certified landing locations.',
                          'NASA 60 m averages describe long-term any-disc visibility; they are not the selected mission timeline or average electrical output.',
                          'Panel power uses Sun distance, area, efficiency, losses, pointing and a uniform-disc fraction above a locally straight horizon. One-minute midpoint power sampling; eclipses and thermal effects unmodeled.',

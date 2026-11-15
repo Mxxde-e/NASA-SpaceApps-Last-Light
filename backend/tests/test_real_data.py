@@ -66,6 +66,39 @@ def test_three_terrain_levels_and_scale_are_used(service):
     assert np.all(np.abs(height)<12000) # catches accidental addition of the radius OFFSET
 
 
+def test_display_mesh_reconstructs_real_source_elevation_on_curved_moon(service):
+    from backend.geometry import surface_position
+    terrain=service.terrain
+    mesh=terrain.display_mesh(); ref=mesh['reference']
+    assert mesh['displaySpacingM']==50 and mesh['sourcePixelM']==5 and mesh['verticalScale']==1
+    assert len(mesh['verticesENU'])==100*100*3
+    r,c=terrain.r0+504,terrain.c0+504
+    x,y=terrain.transform@(c+.5,r+.5)
+    lon,lat=terrain.lonlat(x,y)
+    local=np.array(mesh['verticesENU']).reshape(-1,3)[50*100+50]
+    e,n,u=basis(ref['longitude'],ref['latitude'])
+    reconstructed=surface_position(ref['longitude'],ref['latitude'],ref['elevationM'],0)+local@np.stack([e,n,u])
+    expected=surface_position(lon,lat,float(terrain.datasets['z'][r,c]),0)
+    assert reconstructed==pytest.approx(expected,abs=.001)
+
+
+def test_missing_mesh_vertices_never_create_filled_triangles(service):
+    import copy
+    from backend.mesh import build_terrain_mesh
+    terrain=copy.copy(service.terrain)
+    terrain.datasets=dict(terrain.datasets,z=terrain.datasets['z'].copy())
+    terrain.datasets['z'][terrain.r0+4,terrain.c0+4]=np.nan
+    mesh=build_terrain_mesh(terrain)
+    assert mesh['missingVertices']>=1 and 0 not in mesh['indices']
+
+
+def test_runtime_evidence_uses_all_50_included_reference_comparisons(service):
+    from backend.evidence import geometry_evidence
+    evidence=geometry_evidence(service.geometry)
+    assert sum(c['comparisons'] for c in evidence['checks'])==50
+    assert all(c['passed'] for c in evidence['checks'])
+
+
 def test_analytic_polar_projection_matches_pyproj(service):
     for lon,lat in [(-137.5,-89.46),(0,-85),(90,-88),(180,-82)]:
         unit=basis(lon,lat)[2]

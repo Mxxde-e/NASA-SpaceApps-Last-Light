@@ -166,4 +166,3 @@ function Application(){
   return <><div className="mode-bar" role="group" aria-label="Data mode"><span>LAST LIGHT</span><button aria-pressed={mode==='real'} onClick={()=>setMode('real')}>Real-data study</button><button aria-pressed={mode==='demo'} onClick={()=>setMode('demo')}>Simulated demo</button></div>{mode==='real'?<RealStudy/>:<App/>}<SiteAssistant mode={mode}/></>;
 }
 createRoot(document.getElementById('root')).render(<Application/>);
-
