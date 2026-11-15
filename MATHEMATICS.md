@@ -2,6 +2,8 @@
 
 Implementation: `backend/numerics.py`, `terrain.py`, `geometry.py`, and `analysis.py`. The original simulated model is separate. Units are metres, explicitly named degrees/radians, watts, watt-hours, and UTC/elapsed hours.
 
+The v4 dashboard adds a display-only mesh and explicit ranking priorities. See [IMPROVEMENTS.md](IMPROVEMENTS.md) for their coordinate transforms, ranking equations, and verification. The existing terrain, ephemeris, visibility, solar-power, and battery mathematics remain the analysis engine.
+
 ## Terrain and reference frame
 
 NASA PGDA LOLA **Site01** supplies five co-registered 5 m GeoTIFFs: elevation, height RMS, slope, slope RMS, and return count. Elevation is height above a **1,737,400 m lunar sphere**, not radius. Dimensions, affine transforms, CRS, masks, and checksums are verified. Missing heights never become zero terrain.

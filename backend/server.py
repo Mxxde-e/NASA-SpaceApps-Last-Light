@@ -27,7 +27,7 @@ async def lifespan(app):
     yield
     executor.shutdown(wait=False,cancel_futures=True)
 
-app=FastAPI(title='Last Light real-data regional study',version='3.0.0',lifespan=lifespan)
+app=FastAPI(title='Last Light real-data regional study',version='4.0.0',lifespan=lifespan)
 
 def engine():
     if engine_future is None or not engine_future.done(): raise HTTPException(503,'Loading real terrain and SPICE kernels. Please wait.')
@@ -52,6 +52,15 @@ def map_image(layer:str='terrain'):
 def point(lon:float,lat:float):
     try: return engine().point(lon,lat)
     except ValueError as error: raise HTTPException(422,str(error))
+
+@app.get('/api/terrain-mesh')
+def terrain_mesh():
+    return engine().terrain.display_mesh()
+
+@app.get('/api/evidence')
+def evidence():
+    from .evidence import geometry_evidence
+    return geometry_evidence(engine().geometry)
 
 def run_job(identifier,request):
     try:
