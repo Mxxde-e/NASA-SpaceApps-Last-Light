@@ -41,8 +41,8 @@ export default function TerrainView({point,candidates,scenario,index,request,onS
       for(let i=0;i<position.length;i+=3){position[i]=mesh.verticesENU[i];position[i+1]=mesh.verticesENU[i+2];position[i+2]=-mesh.verticesENU[i+1];}
       geometry.setAttribute('position',new THREE.BufferAttribute(position,3));geometry.setIndex(mesh.indices);geometry.computeVertexNormals();
       scene.add(new THREE.Mesh(geometry,new THREE.MeshLambertMaterial({color:'#a4aaa9',side:THREE.DoubleSide})));
-      scene.add(new THREE.AmbientLight('#91a7bf',1));
-      const light=new THREE.DirectionalLight('#ffe2ae',2);scene.add(light);scene.add(light.target);
+      scene.add(new THREE.AmbientLight('#ffffff',1));
+      const light=new THREE.DirectionalLight('#ffffff',2);scene.add(light);scene.add(light.target);
       const markers=new THREE.Group(),sky=new THREE.Group();scene.add(markers,sky);
       let projected=[],lastContext=null;
       const draw=()=>{
@@ -127,6 +127,6 @@ export default function TerrainView({point,candidates,scenario,index,request,onS
       <div className="terrain-instructions">{view==='orbit'?'Drag to orbit · scroll or pinch to zoom':'Surface observer · fixed direction'}</div>
     </div>
     {error&&<div className="terrain-fallback" role="status"><p>{error}</p><button onClick={onMaps}>Open NASA maps →</button></div>}
-    <p className="terrain-disclosure">5 m elevation source · {mesh?.displaySpacingM||50} m display spacing · no vertical exaggeration. Shading is illustrative. {scenario?'Pink: computed angular horizon; muted curves: sensitivity. Sky guides use a schematic radius, with directions from the selected surface observer. The horizon uses terrain out to 300 km beyond this mesh.':'Run a study to add the computed horizon and date-specific Sun/Earth directions.'} Analysis uses full-resolution source data, independently of this view.</p>
+    <details className="terrain-disclosure"><summary>5 m source · {mesh?.displaySpacingM||50} m display grid · true vertical scale <span>About this view ⌄</span></summary><p>Shading is illustrative. {scenario?'Pink: computed angular horizon; muted curves: sensitivity. Sky guides use a schematic radius, with directions from the selected surface observer. The horizon uses terrain out to 300 km beyond this mesh.':'Run a study to add the computed horizon and date-specific Sun/Earth directions.'} Analysis uses full-resolution source data, independently of this view.</p></details>
   </div>;
 }
