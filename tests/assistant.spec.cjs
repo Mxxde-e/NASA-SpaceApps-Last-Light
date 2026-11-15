@@ -5,7 +5,7 @@ test('guide replies, navigation, and keyboard close work',async({page})=>{
  await page.getByRole('button',{name:'Ask Last Light',exact:true}).click();
  const dialog=page.getByRole('dialog',{name:'Ask Last Light'});
  await expect(dialog).toBeVisible();
- await expect(page.getByLabel('Ask about this website')).toBeFocused();
+ await expect(page.getByLabel('Ask about this website or a mission')).toBeFocused();
  await dialog.getByRole('button',{name:'Where should I start?',exact:true}).click();
  await expect(dialog.getByText('Verified site guide',{exact:true})).toBeVisible();
  await dialog.getByRole('button',{name:'Go to mission setup',exact:false}).click();
@@ -20,7 +20,7 @@ test('model outage falls back, HTML stays text, and clear chat works',async({pag
  await page.goto('/');
  await page.getByRole('button',{name:'Ask Last Light',exact:true}).click();
  const dialog=page.getByRole('dialog',{name:'Ask Last Light'});
- await page.getByLabel('Ask about this website').fill('<img src=x onerror=alert(1)>');
+ await page.getByLabel('Ask about this website or a mission').fill('<img src=x onerror=alert(1)>');
  await dialog.getByRole('button',{name:'Send',exact:true}).click();
  await expect(dialog.getByText('AI connection unavailable. Site help still works.')).toBeVisible();
  await expect(dialog.locator('img')).toHaveCount(0);

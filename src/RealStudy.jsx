@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState, useId } from 'react';
 import './real-study.css';
+import AccessibleSummary from './components/AccessibleSummary.jsx';
 import {NasaFilters,LaunchContext,NasaMethod} from './NasaScreening.jsx';
 import {PowerInputs,SolarReadout,SolarPowerChart} from './PanelPower.jsx';
 import {CandidateReview,RankingInputs,EvidencePanel} from './StudyDashboard.jsx';
@@ -87,12 +88,25 @@ function Comparison({original,selected}){
   return <section id="assistant-comparison" tabIndex="-1" className="panel real-comparison"><div className="section-head"><h2>Compare the real-data scenarios</h2><span className="quiet-tag">LOWER–UPPER SENSITIVITY CASES</span></div><div className="real-table-scroll"><table><thead><tr><th>Derived measure</th>{scenarios.map((s,i)=><th key={s.id}>{i?'Alternative':'Original'} · {s.id}<small>{utc(s.landingUTC)}</small><small>{number(s.point.latitude,5)}°, {number(s.point.longitude,5)}° E</small></th>)}</tr></thead><tbody>{rows.map(([name,fn])=><tr key={name}><th>{name}</th>{scenarios.map(s=><td key={s.id}>{fn(s)}</td>)}</tr>)}<tr><th>Assessed limits</th>{scenarios.map(s=><td key={s.id}><Outcome scenario={s}/></td>)}</tr></tbody></table></div><p className="panel-footnote">NASA percentages are long-term source frequencies, independent of landing date; mission hours use the selected dates and definition. * The longest interval touches a mission boundary; only its in-mission portion is measured. Sensitivity envelopes are not confidence guarantees. Connected area is clipped to the 5 km study patch. Neither pixel resolution nor interpolation proves obstacle clearance.</p>
   {selected&&<div className="insight"><span className="insight-icon">↗</span><div><h3>What changed?</h3><p>Moving {number(selected.point.relocationM,0)} m and shifting landing by {number(selected.scheduleShiftH,1)} h changes the lower Sun-visible estimate by {number(selected.metrics.sunVisibleH[0]-original.metrics.sunVisibleH[0],2)} h and the lower minimum battery estimate by {number(selected.metrics.batteryMinimumWh[0]-original.metrics.batteryMinimumWh[0],0)} Wh. The alternative's regional plane slope is {number(selected.point.slopeDeg,2)}°. Ground and descent suitability still require independent assessment.</p></div></div>}</section>;
 }
-export default function RealStudy(){
+export default function RealStudy({onContext,selection,onSelectionConsumed}){
   const [info,setInfo]=useState(null),[form,setForm]=useState(null),[point,setPoint]=useState(null),[error,setError]=useState(''),[loading,setLoading]=useState(true),[job,setJob]=useState(null),[result,setResult]=useState(null),[selectedId,setSelectedId]=useState(null),[active,setActive]=useState('O'),[index,setIndex]=useState(0),[playing,setPlaying]=useState(false);
   const alive=useRef(true), poll=useRef(null);
+  const appliedSelection=useRef(null);
+  const [chosenPlan,setChosenPlan]=useState(false);
+  useEffect(()=>{onContext?.({form:form?{...form,landingUTC:withUTC(form.landingUTC),earliestUTC:withUTC(form.earliestUTC),latestUTC:withUTC(form.latestUTC)}:null,busy:!!job});},[form,job,onContext]);
+  useEffect(()=>{
+    if(!selection||!info||appliedSelection.current===selection.id)return;
+    appliedSelection.current=selection.id;
+    onSelectionConsumed?.();
+    const request=selection.request;
+    setPoint(selection.point);setForm({...request,landingUTC:request.landingUTC.slice(0,16),earliestUTC:request.earliestUTC.slice(0,16),latestUTC:request.latestUTC.slice(0,16)});
+    setChosenPlan(true);setSelectedId(null);setActive('O');setIndex(0);setPlaying(false);search(null,request);
+    document.getElementById('assistant-setup')?.focus();
+    document.getElementById('assistant-setup')?.scrollIntoView({block:'start'});
+  },[selection,info]);
   useEffect(()=>{alive.current=true;load();return()=>{alive.current=false;clearTimeout(poll.current);};},[]);
   async function load(){setLoading(true);setError('');try{const data=await api('/api/study');if(alive.current){setInfo(data);setForm(defaults(data));setPoint(data.terrain.defaultPoint);setLoading(false);}}catch(e){if(alive.current){setError(e.message);setLoading(false);}}}
-  function change(name,value){setForm(p=>({...p,[name]:value,...(name==='excludeOriginal'&&value&&p.changeType==='time'?{changeType:'both'}:{})}));setResult(null);setSelectedId(null);setActive('O');setIndex(0);setPlaying(false);setError('');}
+  function change(name,value){setChosenPlan(false);setForm(p=>({...p,[name]:value,...(name==='excludeOriginal'&&value&&p.changeType==='time'?{changeType:'both'}:{})}));setResult(null);setSelectedId(null);setActive('O');setIndex(0);setPlaying(false);setError('');}
   async function updatePoint(lon,lat){try{const p=await api(`/api/point?lon=${encodeURIComponent(lon)}&lat=${encodeURIComponent(lat)}`);setPoint(p);change('originalLon',p.longitude);change('originalLat',p.latitude);}catch(e){setError(e.message);}}
   function pick(x,y){
     // Inverse spherical south-polar stereographic, matching the source radius/central meridian.
@@ -100,7 +114,7 @@ export default function RealStudy(){
     const longitude=Math.atan2(x,y)*180/Math.PI;updatePoint(longitude,latitude);
   }
   async function watch(id){try{const value=await api(`/api/jobs/${id}`);if(!alive.current)return;if(value.status==='complete'){setResult(value.result);setJob(null);setError('');const first=value.result.candidates[0];setSelectedId(first?.id||null);setActive(first?.id||'O');setIndex(0);}else if(value.status==='failed'){setJob(null);setError(value.error);}else{setJob({...value,id});poll.current=setTimeout(()=>watch(id),1000);}}catch(e){setJob(null);setError(e.message);}}
-  async function search(e){e?.preventDefault();setError('');setPlaying(false);try{const payload={...form,landingUTC:withUTC(form.landingUTC),earliestUTC:withUTC(form.earliestUTC),latestUTC:withUTC(form.latestUTC)};const j=await api('/api/search',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});setResult(null);setJob({id:j.jobId,progress:'Starting verified terrain and ephemeris calculation',elapsedSeconds:0});watch(j.jobId);}catch(e){setError(e.message);}}
+  async function search(e,override){e?.preventDefault();setError('');setPlaying(false);if(!override)setChosenPlan(false);try{const payload=override||{...form,landingUTC:withUTC(form.landingUTC),earliestUTC:withUTC(form.earliestUTC),latestUTC:withUTC(form.latestUTC)};const j=await api('/api/search',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});setResult(null);setJob({id:j.jobId,progress:'Starting verified terrain and ephemeris calculation',elapsedSeconds:0});watch(j.jobId);}catch(e){setError(e.message);}}
   function exportStudy(){
     const url=URL.createObjectURL(new Blob([JSON.stringify({result,studyMetadata:info},null,2)],{type:'application/json'}));
     const link=document.createElement('a');link.href=url;link.download=`last-light-study-${result.computedUTC.slice(0,10)}.json`;link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
@@ -111,12 +125,12 @@ export default function RealStudy(){
   const setNow=()=>{const now=Math.ceil(Date.now()/900000)*900000;change('landingUTC',dateInput(now));change('earliestUTC',dateInput(now));change('latestUTC',dateInput(now+24*3600000));};
   const control=(name,label,unit,min,max,step=1,hint='')=><Control key={name} name={name} label={label} value={form[name]} onChange={change} unit={unit} min={min} max={max} step={step} hint={hint} disabled={!!job}/>;
   function selectScenario(id){if(id!=='O')setSelectedId(id);setActive(id);setIndex(0);setPlaying(false);}
-  function reset(){setForm(defaults(info));setPoint(info.terrain.defaultPoint);setResult(null);setSelectedId(null);setActive('O');setIndex(0);setError('');setPlaying(false);}
+  function reset(){setChosenPlan(false);setForm(defaults(info));setPoint(info.terrain.defaultPoint);setResult(null);setSelectedId(null);setActive('O');setIndex(0);setError('');setPlaying(false);}
   const windowLabel=form?landingWindowLabel(form.earliestUTC,form.latestUTC):[];
-  return <div className="studio-shell"><StudioRail/><main className="studio-main">
+  return <div className="studio-shell"><StudioRail/><main className="studio-main" id="workspace" tabIndex="-1">
   {!info?<section className="panel real-service-state"><h1>{loading?'Loading the study workspace…':'Real-data service unavailable'}</h1><p>{loading?'Reading verified terrain and SPICE metadata.':error||'The calculation service is not running.'}</p><button className="primary-button" onClick={load} disabled={loading}>Retry connection</button></section>:<>
   <div className="studio-workbench"><aside className="studio-sidebar"><section id="assistant-setup" tabIndex="-1" className="studio-mission real-form"><div className="studio-inspector-heading"><h2>Mission inspector</h2><button type="button" className="studio-reset" disabled={!!job} onClick={reset}>Reset</button></div>
-  <form onSubmit={search}><fieldset disabled={!!job}><legend className="sr-only">Mission settings and requirements</legend>
+  {chosenPlan&&<p className="chosen-plan-note" role="status">Your chosen site and time are now the original plan. This run evaluates that exact plan; other sites and times are excluded.</p>}<form onSubmit={search}><fieldset disabled={!!job}><legend className="sr-only">Mission settings and requirements</legend>
   <div className="studio-study-area"><div className="field-heading"><span>Study area</span><HelpTip label="Study area">The verified 5 × 5 km Connecting Ridge footprint near the lunar south pole. Other locations need additional verified data.</HelpTip></div><strong>Connecting Ridge <small>5 × 5 km</small></strong></div>
   <div className="studio-window"><div className="field-heading"><span>Landing window</span><HelpTip label="Landing window">Allowed UTC arrival window for alternative plans. Expand to change the earliest and latest landing times; the original plan has its own landing time in Advanced settings.</HelpTip></div><details className="studio-window-picker"><summary><span><strong>{windowLabel[0]}</strong><small>{windowLabel[1]}</small></span><span aria-hidden="true">⌄</span></summary><div className="studio-window-fields"><Control name="earliestUTC" label="Earliest landing · UTC" type="datetime-local" value={form.earliestUTC} onChange={change}/><Control name="latestUTC" label="Latest landing · UTC" type="datetime-local" value={form.latestUTC} onChange={change}/></div></details></div>
   {control('durationH','Surface duration','h',1,168,.25)}<RankingInputs form={form} change={change}/>
@@ -138,10 +152,11 @@ export default function RealStudy(){
   {job&&<div className="real-progress" role="status"><span className="real-progress-dot"/><div><strong>{job.progress}</strong><p>{number(job.elapsedSeconds||0,0)} s elapsed · verified terrain and SPICE calculation</p></div></div>}
   <StudioExplorer info={info} point={result?.original.point||point} candidates={result?.candidates||[]} current={current} index={index} request={result?.request||form} active={active} onPick={pick} onSelect={selectScenario} busy={!!job} onExport={result?exportStudy:null}/>
   <StudioTimeline scenario={current} request={result?.request||form} index={index} setIndex={setIndex} playing={playing} setPlaying={setPlaying}/>
+  <AccessibleSummary point={point} scenario={current} index={index}/>
   {current&&<details className="studio-horizon-details"><summary>Computed local horizon <span>{current.id} · {result.request.observerHeightM} m observer</span></summary><Horizon scenario={current} index={index} request={result.request}/></details>}
   </div></div>
   <div className="studio-details"><section id="compare" className="studio-comparisons"><div className="studio-section-heading"><div><p className="studio-eyebrow">COMPARE</p><h2>Explore the trade-offs</h2></div><HelpTip label="Scenario comparisons">Compare actual evaluated locations and dates. NASA averages, mission hours and battery sensitivity cases are kept separate.</HelpTip></div>
-  {result?<><section className="panel real-result-heading"><div><h2>{result.candidates.length?`${result.candidates.length} areas to investigate`:'No candidate meets the assessed limits'}</h2><p>{result.screenedGridPoints} grid points screened · {result.geometryLocations} locations analyzed · {result.evaluatedScenarios} site/time combinations</p><p>NASA screening excluded {result.nasaRejectedGridPoints} points.</p></div><div><span>{result.cached?'Cached':'Calculated'} · {number(result.elapsedSeconds,1)} s<br/>{utc(result.computedUTC)}</span><button className="real-inline-button real-export" onClick={exportStudy}>Download study JSON ↓</button></div></section>
+  {result?<><section className="panel real-result-heading"><div><h2>{chosenPlan?'Chosen site & time evaluated':result.candidates.length?`${result.candidates.length} areas to investigate`:'No candidate meets the assessed limits'}</h2><p>{result.screenedGridPoints} grid points screened · {result.geometryLocations} locations analyzed · {result.evaluatedScenarios} site/time combinations</p><p>NASA screening excluded {result.nasaRejectedGridPoints} points.</p></div><div><span>{result.cached?'Cached':'Calculated'} · {number(result.elapsedSeconds,1)} s<br/>{utc(result.computedUTC)}</span><button className="real-inline-button real-export" onClick={exportStudy}>Download study JSON ↓</button></div></section>
   {result.request.requireKnownGround&&<div className="real-ground-warning" role="status"><strong>0 qualifying options: known ground support is required.</strong><p>Investigation candidates remain visible. Soil strength and sinkage are unassessed.</p></div>}
   <CandidateReview result={result} selectedId={selectedId} onSelect={selectScenario}/><Comparison original={result.original} selected={selected}/>
   <details className="studio-expanded-timeline"><summary>Detailed original / alternative timeline</summary><Timeline original={result.original} selected={selected} index={index} setIndex={setIndex} playing={playing} setPlaying={setPlaying} active={active} setActive={setActive} request={result.request}/></details><SolarPowerChart original={result.original} selected={selected} index={index} request={result.request}/>

@@ -12,6 +12,7 @@ from fastapi import APIRouter, HTTPException, Request
 from pydantic import BaseModel, ConfigDict, Field
 
 router = APIRouter()
+DEFAULT_MODEL = 'baidu/ernie-5.5-flash-preview:free'
 GUIDE = json.loads(Path(__file__).with_name('site_guide.json').read_text(encoding='utf-8'))
 SLOTS = threading.BoundedSemaphore(2)
 SYSTEM = ('You are Last Light site help. Use only the supplied public site guide. Answer briefly, in plain text. '
@@ -50,11 +51,12 @@ def reserve_call(path, now=None, daily=100, minute=8):
         db.execute('INSERT INTO usage VALUES (?)', (now,))
         return True
 
-def call_provider(key, model, messages):
+def call_provider(key, model, messages, *, response_format=None):
     # Fixed HTTPS origin: clients cannot select endpoints, models, roles or tools.
     with requests.post('https://openrouter.ai/api/v1/chat/completions',
         headers={'Authorization': 'Bearer '+key, 'Content-Type':'application/json'},
-        json={'model':model, 'messages':messages, 'max_tokens':400, 'temperature':0.2},
+        json={'model':model, 'messages':messages, 'max_tokens':600 if response_format else 400, 'temperature':0.2,
+              'provider':{'allow_fallbacks':False}, **({'response_format':response_format} if response_format else {})},
         timeout=(4, 15), stream=True, allow_redirects=False) as response:
         response.raise_for_status()
         body = bytearray()
@@ -68,15 +70,18 @@ def call_provider(key, model, messages):
         if not isinstance(text,str) or not text.strip(): raise ValueError('Empty provider response')
         return text.strip()[:2400]
 
+def check_origin(request):
+    origin = request.headers.get('origin')
+    allowed = {x.strip() for x in os.getenv('CHAT_ALLOWED_ORIGINS','https://last-light.style.dev,http://127.0.0.1:8000,http://localhost:8000,http://127.0.0.1:5173,http://localhost:5173').split(',')}
+    if origin and origin not in allowed: raise HTTPException(403,'Chat origin is not allowed.')
+
 @router.post('/api/chat')
 async def chat(payload: ChatInput, request: Request):
-    origin = request.headers.get('origin')
-    allowed = {x.strip() for x in os.getenv('CHAT_ALLOWED_ORIGINS','https://last-light.style.dev,http://127.0.0.1:5173,http://localhost:5173').split(',')}
-    if origin and origin not in allowed: raise HTTPException(403,'Chat origin is not allowed.')
+    check_origin(request)
     entry=topic(payload.message)
     base={'answer':entry['answer'],'section':entry['section'],'topic':entry['title'],'mode':'guide'}
     key=os.getenv('OPENROUTER_API_KEY','')
-    model=os.getenv('CHAT_MODEL','')
+    model=os.getenv('CHAT_MODEL') or DEFAULT_MODEL
     if os.getenv('CHAT_ENABLED','false').lower()!='true' or not key or not model:
         return base
     if not SLOTS.acquire(blocking=False):

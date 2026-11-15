@@ -50,9 +50,10 @@ def test_provider_and_failure_are_bounded(tmp_path,monkeypatch):
         r=asyncio.run(chat(ChatInput(message='How do comparisons work?'),request()))
         assert r['mode']=='guide' and 'secret' not in json.dumps(r)
 
-def test_off_topic_defaults_and_no_search_tool():
+def test_off_topic_defaults_and_planning_instructions():
     assert topic('unrelated question')['section']=='setup'
-    assert 'cannot execute searches' in topic('find best landing')['answer']
+    assert 'Plan a real study' in topic('find best landing')['answer']
+    assert 'not a certified safe' in topic('find best landing')['answer']
 
 def test_concurrency_returns_help(monkeypatch):
     monkeypatch.setenv('CHAT_ENABLED','true');monkeypatch.setenv('OPENROUTER_API_KEY','test-only')

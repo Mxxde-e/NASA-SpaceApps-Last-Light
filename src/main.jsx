@@ -1,11 +1,12 @@
-import {HelpTip,StudioIcon,ThemeToggle} from './components/StudioUI.jsx';
-import React, { useState, useMemo, useEffect, useId } from 'react';
+import {HelpTip,StudioIcon,ThemeToggle,ReadabilityToggle} from './components/StudioUI.jsx';
+import React, { useState, useMemo, useEffect, useId, useRef } from 'react';
 import { createRoot } from 'react-dom/client';
 import { DEFAULTS, SITES, TERRAIN, STEP, HOUR, COVERAGE_START, COVERAGE_END, parseUTC, inputUTC, utc, fmt, siteById, horizonAt, simulate, validate, findAlternatives, explain, energyAt, requiredGroundPressure } from './model.js';
 import './styles.css';
 import RealStudy from './RealStudy.jsx';
 import SiteAssistant from './components/SiteAssistant.jsx';
 import './mission-studio.css';
+import './assistant-planner.css';
 
 function Icon({ name, size = 18, ...props }) {
   const paths = { sun: <><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></>, earth: <><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c5 5 5 13 0 18-5-5-5-13 0-18Z"/></>, arrow: <path d="M4 12h16m-6-6 6 6-6 6"/>, check: <path d="m5 12 4 4L19 6"/>, warning: <><path d="m12 3 10 18H2L12 3Z"/><path d="M12 9v5m0 3v.1"/></>, play: <path d="m8 4 12 8-12 8V4Z"/>, pause: <path d="M8 4v16m8-16v16"/>, reset: <><path d="M3 10a9 9 0 1 1 2 8M3 4v6h6"/></>, chevron: <path d="m6 9 6 6 6-6"/>, battery: <><rect x="2" y="7" width="18" height="10" rx="2"/><path d="M22 10v4M6 10v4m4-4v4m4-4v4"/></>, cross: <path d="m6 6 12 12M6 18 18 6"/>, compass: <><circle cx="12" cy="12" r="9"/><path d="m15 9-2 4-4 2 2-4 4-2Z"/></> };
@@ -165,6 +166,9 @@ function App() {
 
 function Application(){
   const [mode,setMode]=useState('real');
-  return <><header className="studio-topbar"><a href="#" className="studio-brand" aria-label="Last Light home"><StudioIcon name="moon" size={28}/><span>LAST LIGHT</span></a><div className="studio-header-tools"><div className="studio-mode-switch" role="group" aria-label="Data mode"><button aria-pressed={mode==='real'} onClick={()=>setMode('real')}>Real-data study</button><button aria-pressed={mode==='demo'} onClick={()=>setMode('demo')}>Simulated demo</button></div><ThemeToggle/></div></header>{mode==='real'?<RealStudy/>:<div className="demo-surface"><App/></div>}<SiteAssistant mode={mode}/></>;
+  const [missionContext,setMissionContext]=useState(null),[selection,setSelection]=useState(null);
+  const topbar=useRef(null);
+  useEffect(()=>{const observer=new ResizeObserver(([entry])=>document.documentElement.style.setProperty('--studio-header-height',`${entry.target.offsetHeight}px`));observer.observe(topbar.current);return()=>observer.disconnect();},[]);
+  return <><a className="workspace-skip" href={mode==='real'?'#workspace':'#mission'}>Skip to mission workspace</a><header ref={topbar} className="studio-topbar"><a href="#" className="studio-brand" aria-label="Last Light home"><StudioIcon name="moon" size={28}/><span>LAST LIGHT</span></a><div className="studio-header-tools"><div className="studio-mode-switch" role="group" aria-label="Data mode"><button aria-pressed={mode==='real'} onClick={()=>setMode('real')}>Real-data study</button><button aria-pressed={mode==='demo'} onClick={()=>setMode('demo')}>Simulated demo</button></div><ReadabilityToggle/><ThemeToggle/></div></header>{mode==='real'?<RealStudy onContext={setMissionContext} selection={selection} onSelectionConsumed={()=>setSelection(null)}/>:<div className="demo-surface"><App/></div>}<SiteAssistant mode={mode} missionContext={missionContext} onApply={value=>{if(!missionContext?.busy)setSelection({...value,id:crypto.randomUUID()});}}/></>;
 }
 createRoot(document.getElementById('root')).render(<Application/>);
