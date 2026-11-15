@@ -5,7 +5,17 @@ The approved local pilot has two separate modes:
 - **Real-data study:** NASA precomputed sunlight/Earth/permanent-shadow maps, actual LOLA terrain, SPICE Sun/Earth geometry, and panel-based power/battery calculations. One 5 × 5 km Connecting Ridge study patch.
 - **Simulated demo:** the original concept with three fictional locations and illustrative ground-pressure screening. See [SIMULATED_DEMO.md](SIMULATED_DEMO.md).
 
-The existing hosted prototype has not been updated by this work. No paid services, accounts, or API keys are needed.
+The `improvements` branch adds a terrain-first dashboard, a real-elevation 3D viewer, explainable ranking priorities, and in-app reference checks. No paid services, accounts, or API keys are needed. GitHub pushes do not deploy automatically; preserve the existing Freestyle safeguards in [deploy/FREESTYLE.md](deploy/FREESTYLE.md).
+
+## Improvements dashboard
+
+- Switch between **3D terrain** and **NASA maps**. The curved-Moon mesh samples actual 5 m LOLA elevations every 50 m for display, at true vertical scale. Analysis still uses the original terrain grids. Missing display triangles are omitted.
+- Run a study, select Original or R1–R3, and use the shared explorer playback. **Look toward Sun / Earth** places the camera at the selected surface observer. The pink angular guide shows the computed horizon; muted curves show sensitivity. The guide radius is schematic, while its angular directions are computed. Orbit view is an overview, not an observer's sky measurement. Shading is illustrative.
+- Expand mission settings as needed. Choose **Keep the schedule**, **Preserve power**, **Maintain Earth visibility**, or **Minimize relocation**. Assessed hard limits filter first; the chosen priority ranks passing evaluated scenarios lexicographically. Each candidate shows ordered ranking criteria and actual metrics. It is a bounded search, not an exhaustive optimum.
+- **Evidence → Run / show reference checks** compares the running engine with 50 independently captured Horizons direction outputs at one observer and 25 times per body. The panel reports measured angular differences, the 0.0001° tolerance, scope, and limits. It does not validate terrain occlusion, radio links, or landing safety.
+- Builds retain the saved `docs/presentation-backup.html` at `dist/presentation-backup.html`. The backup remains a saved example; changing the live study does not silently replace it.
+
+Detailed methods and validation for this update are in [IMPROVEMENTS.md](IMPROVEMENTS.md).
 
 ## Open on this computer
 
@@ -37,13 +47,13 @@ python -m backend.server
 
 ## Find another candidate
 
-1. Choose **Real-data study**. Switch among NASA sunlight, Earth visibility, permanent shadow, and LOLA terrain. Set NASA long-term screening thresholds (the 20% defaults are illustrative user requirements). Pick the original point on the hillshade or enter coordinates and click **Locate entered coordinates**. The full 50 m patch must fit within the verified footprint.
+1. Choose **Real-data study**, then **NASA maps** to switch among NASA sunlight, Earth visibility, permanent shadow, and LOLA terrain. Expand NASA screening thresholds (the 20% defaults are illustrative user requirements). Pick the original point on the map or enter coordinates and click **Locate entered coordinates**. The full 50 m patch must fit within the verified footprint.
 2. Set UTC dates, mission duration, change type, relocation radius, and exclusions. **Use Now (UTC)** selects the next 15-minute boundary; it does not acquire new imagery.
 3. Enter regional terrain limits, instrument height, panel area, efficiency, electrical losses, pointing, battery/load assumptions, and maximum Earth-hidden interval. Choose fixed tilt/azimuth or ideal two-axis Sun tracking, and choose the mission Earth-centre or any-disc visibility definition. Defaults are illustrative requirements, not NASA landing criteria.
 4. Search, then compare R1–R3 with the original. Scrub/play the shared timeline and change the active horizon. A first uncached search can take a few minutes; repeat searches reuse verified caches. Progress is shown.
 5. Enable **Require known ground support to qualify** to see the zero-qualification case. Investigation candidates remain visible for review with ground support explicitly unknown.
 
-The finder first applies NASA screening limits to nearest 60 m source pixels on a 250 m search grid, then checks local terrain and mission geometry. It screens a 250 m grid and analyzes up to eight terrain-screened locations at least 500 m apart. Alternative times use six-hour spacing anchored to the earliest time, plus the latest endpoint. It returns up to three distinct locations; time-only mode can return several dates at the original location. It filters assessed limits before ranking by absolute schedule shift, relocation, then lower minimum battery. It is bounded, not exhaustive. Relocation distance does not prove flight reachability.
+The finder first applies NASA screening limits to nearest 60 m source pixels on a 250 m search grid, then checks local terrain and mission geometry. It screens a 250 m grid and analyzes up to eight terrain-screened locations at least 500 m apart. Alternative times use six-hour spacing anchored to the earliest time, plus the latest endpoint. It returns up to three distinct locations; time-only mode can return several dates at the original location. It filters assessed limits before applying the selected ranking priority. Default: smallest absolute schedule shift, shortest relocation, then highest lower-case minimum battery. Ground support remains unknown even when all assessed limits pass. It is bounded, not exhaustive. Relocation distance does not prove flight reachability.
 
 ## Actual calculations and their limits
 

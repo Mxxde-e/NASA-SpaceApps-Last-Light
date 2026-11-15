@@ -5,6 +5,7 @@ import io
 import json
 import re
 import threading
+from functools import lru_cache
 import numpy as np
 import rasterio
 from pyproj import Transformer, CRS
@@ -23,6 +24,13 @@ def pds_number(text,key):
     return float(match.group(1))
 
 class Terrain:
+    metadata_bounds=PATCH_BOUNDS
+
+    @lru_cache(maxsize=1)
+    def display_mesh(self):
+        from .mesh import build_terrain_mesh
+        return build_terrain_mesh(self)
+
     def __init__(self):
         self.manifest=json.loads((DATA/'sources.json').read_text())
         # Check the actual bytes before trusting provenance or checksum-keyed caches.

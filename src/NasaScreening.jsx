@@ -5,7 +5,7 @@ const pct=v=>v==null?'Unassessed':`${v.toFixed(2)}%`;
 const layers={solar:'NASA sunlight',earth:'NASA Earth visibility',shadow:'NASA permanent shadow',terrain:'LOLA terrain'};
 
 export function NasaFilters({control,form,change}){
-  return <><legend>1 / Screen with NASA datasets</legend><div className="real-fields">
+  return <><h3 className="settings-heading">1 / Screen with NASA datasets</h3><div className="real-fields">
     {control('minAverageSolarPercent','Minimum NASA sunlight frequency','%',0,100,.01)}
     {control('minAverageEarthPercent','Minimum NASA Earth visibility','%',0,100,.01)}
   </div><label className="real-check"><input type="checkbox" checked={form.excludePermanentShadow} onChange={e=>change('excludePermanentShadow',e.target.checked)}/>Exclude NASA permanent-shadow pixels</label>
