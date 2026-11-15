@@ -1,5 +1,6 @@
 import React,{useState} from 'react';
 import './screening.css';
+import {HelpTip} from './components/StudioUI.jsx';
 
 const pct=v=>v==null?'Unassessed':`${v.toFixed(2)}%`;
 const layers={solar:'NASA sunlight',earth:'NASA Earth visibility',shadow:'NASA permanent shadow',terrain:'LOLA terrain'};
@@ -8,7 +9,7 @@ export function NasaFilters({control,form,change}){
   return <><h3 className="settings-heading">1 / Screen with NASA datasets</h3><div className="real-fields">
     {control('minAverageSolarPercent','Minimum NASA sunlight frequency','%',0,100,.01)}
     {control('minAverageEarthPercent','Minimum NASA Earth visibility','%',0,100,.01)}
-  </div><label className="real-check"><input type="checkbox" checked={form.excludePermanentShadow} onChange={e=>change('excludePermanentShadow',e.target.checked)}/>Exclude NASA permanent-shadow pixels</label>
+  </div><div className="check-with-help"><label className="real-check"><input type="checkbox" checked={form.excludePermanentShadow} onChange={e=>change('excludePermanentShadow',e.target.checked)}/>Exclude NASA permanent-shadow pixels</label><HelpTip label="Exclude permanent shadow">Filter points whose nearest source NASA pixel is classified as permanently shadowed. This archived classification is separate from the selected mission dates.</HelpTip></div>
   <p className="real-form-help">Your screening thresholds apply to archived 60 m, long-term any-disc visibility frequencies. These are separate from the selected mission's hours and power.</p></>;
 }
 

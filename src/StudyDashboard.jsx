@@ -1,5 +1,6 @@
 import React,{lazy,Suspense,useEffect,useState} from 'react';
 import SourceMap from './NasaScreening.jsx';
+import {SelectField} from './components/StudioUI.jsx';
 import './dashboard.css';
 const TerrainView=lazy(()=>import('./TerrainView.jsx'));
 const f=(v,d=1)=>Number.isFinite(v)?v.toLocaleString('en-GB',{maximumFractionDigits:d,minimumFractionDigits:d}):'—';
@@ -8,7 +9,7 @@ const date=s=>new Date(s).toISOString().replace('T',' ').slice(0,16)+' UTC';
 export const priorities={schedule:{label:'Keep the schedule',description:'Smallest absolute time shift, then shortest relocation, then higher lower-case minimum battery.'},power:{label:'Preserve power',description:'Higher lower-case minimum battery, then generated energy, then a shorter upper-case dark interval.'},communication:{label:'Maintain Earth visibility',description:'Shorter upper-case Earth-hidden interval, then more lower-case Earth-visible hours. Radio links remain unassessed.'},relocation:{label:'Minimize relocation',description:'Shortest relocation, then smallest absolute time shift, then higher lower-case minimum battery.'}};
 
 export function RankingInputs({form,change}){
-  return <div className="ranking-input"><label className="real-control"><span>Rank passing candidates by</span><select aria-label="Candidate ranking priority" value={form.rankingPriority} onChange={e=>change('rankingPriority',e.target.value)}>{Object.entries(priorities).map(([id,p])=><option key={id} value={id}>{p.label}</option>)}</select></label><p>{priorities[form.rankingPriority].description} Ties use the remaining criteria shown with the results. Mandatory limits always apply first.</p></div>;
+  return <div className="ranking-input"><SelectField label="Ranking priority" hint={`${priorities[form.rankingPriority].description} Mandatory limits apply before ranking.`} value={form.rankingPriority} onChange={e=>change('rankingPriority',e.target.value)}>{Object.entries(priorities).map(([id,p])=><option key={id} value={id}>{p.label}</option>)}</SelectField></div>;
 }
 
 export function ExplorerPlayback({scenario,index,setIndex,playing,setPlaying}){

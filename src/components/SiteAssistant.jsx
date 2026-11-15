@@ -1,6 +1,7 @@
 import React,{useEffect,useRef,useState} from 'react';
 import guide from '../../backend/site_guide.json';
 import './SiteAssistant.css';
+import {StudioIcon} from './StudioUI.jsx';
 
 const welcome={role:'assistant',content:'Need a hand? I can explain Last Light and help you find the right controls. I cannot run searches or choose a landing site.'};
 const targets={setup:['assistant-setup','mission'],terrain:['assistant-terrain'],comparison:['assistant-comparison','comparison'],sources:['assistant-sources','method']};
@@ -54,6 +55,6 @@ export default function SiteAssistant({mode}){
       <form onSubmit={e=>{e.preventDefault();ask(question);}}><label htmlFor="site-assistant-question">Ask about this website</label><div><input ref={input} id="site-assistant-question" value={question} maxLength={1200} onChange={e=>setQuestion(e.target.value)} placeholder="How do I compare landing dates?" autoComplete="off"/><button type="submit" disabled={busy||!question.trim()}>Send</button></div></form>
       <footer><span>Help, not flight advice.</span><button type="button" disabled={busy} onClick={()=>{setMessages([welcome]);setNotice('');}}>Clear chat</button></footer>
     </section>}
-    <button ref={toggle} type="button" className="site-assistant-toggle" aria-label={open?'Close site help panel':'Ask Last Light'} aria-expanded={open} aria-controls="site-assistant-panel" onClick={()=>open?close():setOpen(true)}><span aria-hidden="true">✦ </span>{open?'Close help':'Ask Last Light'}</button>
+    <button ref={toggle} type="button" className="site-assistant-toggle" aria-label={open?'Close site help panel':'Ask Last Light'} aria-expanded={open} aria-controls="site-assistant-panel" onClick={()=>open?close():setOpen(true)}><StudioIcon name="chat" size={17}/>{open?'Close help':'Ask Last Light'}</button>
   </aside>;
 }

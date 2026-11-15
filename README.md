@@ -5,7 +5,7 @@ The approved local pilot has two separate modes:
 - **Real-data study:** NASA precomputed sunlight/Earth/permanent-shadow maps, actual LOLA terrain, SPICE Sun/Earth geometry, and panel-based power/battery calculations. One 5 × 5 km Connecting Ridge study patch.
 - **Simulated demo:** the original concept with three fictional locations and illustrative ground-pressure screening. See [SIMULATED_DEMO.md](SIMULATED_DEMO.md).
 
-The `improvements` branch adds a terrain-first dashboard, a real-elevation 3D viewer, explainable ranking priorities, and in-app reference checks. No paid services, accounts, or API keys are needed. GitHub pushes do not deploy automatically; preserve the existing Freestyle safeguards in [deploy/FREESTYLE.md](deploy/FREESTYLE.md).
+The main interface follows **Option C — White Mission Studio**: a mission inspector beside the actual-elevation terrain view, with a shared timeline underneath. The top bar switches between light and dark themes and remembers the choice in this browser. Small circled question marks explain controls and results on hover, keyboard focus or tap; Escape dismisses them. No paid services, accounts, or API keys are needed for the calculator. GitHub pushes do not deploy automatically; preserve the existing Freestyle safeguards in [deploy/FREESTYLE.md](deploy/FREESTYLE.md).
 
 ## Improvements dashboard
 
@@ -15,7 +15,7 @@ The `improvements` branch adds a terrain-first dashboard, a real-elevation 3D vi
 - **Evidence → Run / show reference checks** compares the running engine with 50 independently captured Horizons direction outputs at one observer and 25 times per body. The panel reports measured angular differences, the 0.0001° tolerance, scope, and limits. It does not validate terrain occlusion, radio links, or landing safety.
 - Builds retain the saved `docs/presentation-backup.html` at `dist/presentation-backup.html`. The backup remains a saved example; changing the live study does not silently replace it.
 
-Detailed methods and validation for this update are in [IMPROVEMENTS.md](IMPROVEMENTS.md).
+Detailed methods and validation are in [IMPROVEMENTS.md](IMPROVEMENTS.md). The Option C layout and verification are documented in [MISSION_STUDIO.md](MISSION_STUDIO.md).
 
 ## Open on this computer
 
@@ -53,7 +53,7 @@ python -m backend.server
 4. Search, then compare R1–R3 with the original. Scrub/play the shared timeline and change the active horizon. A first uncached search can take a few minutes; repeat searches reuse verified caches. Progress is shown.
 5. Enable **Require known ground support to qualify** to see the zero-qualification case. Investigation candidates remain visible for review with ground support explicitly unknown.
 
-The finder first applies NASA screening limits to nearest 60 m source pixels on a 250 m search grid, then checks local terrain and mission geometry. It screens a 250 m grid and analyzes up to eight terrain-screened locations at least 500 m apart. Alternative times use six-hour spacing anchored to the earliest time, plus the latest endpoint. It returns up to three distinct locations; time-only mode can return several dates at the original location. It filters assessed limits before applying the selected ranking priority. Default: smallest absolute schedule shift, shortest relocation, then highest lower-case minimum battery. Ground support remains unknown even when all assessed limits pass. It is bounded, not exhaustive. Relocation distance does not prove flight reachability.
+The finder first applies NASA screening limits to nearest 60 m source pixels on a 250 m search grid, then checks local terrain and mission geometry. It screens a 250 m grid and analyzes up to eight terrain-screened locations at least 500 m apart. Alternative times use six-hour spacing anchored to the earliest time, plus the latest endpoint. It returns up to three distinct locations; time-only mode can return several dates at the original location. It filters assessed limits before applying the selected ranking priority. The interface initially selects Preserve power: higher lower-case minimum battery, then generated energy, then a shorter upper-case dark interval. Keep the schedule remains available and is the API fallback when no priority is supplied. Ground support remains unknown even when all assessed limits pass. It is bounded, not exhaustive. Relocation distance does not prove flight reachability.
 
 ## Actual calculations and their limits
 
