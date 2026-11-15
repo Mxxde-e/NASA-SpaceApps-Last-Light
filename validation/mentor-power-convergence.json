@@ -1,0 +1,66 @@
+{
+  "algorithm": "real-v3.1",
+  "point": {
+    "longitude": -137.5733594631768,
+    "latitude": -89.4806345655543
+  },
+  "nasaPixel": {
+    "pixelM": 60,
+    "sourceURL": "https://pgda.gsfc.nasa.gov/products/69",
+    "definition": "Long-term frequency of any part of the disc visible; not mission-specific hours.",
+    "solarPct": 49.352000000000004,
+    "solarPixel": {
+      "row": 2722,
+      "column": 2351,
+      "rawDN": 12338
+    },
+    "earthPct": 58.040000000000006,
+    "earthPixel": {
+      "row": 2722,
+      "column": 2351,
+      "rawDN": 14510
+    },
+    "permanentShadow": false,
+    "shadowPixel": {
+      "row": 2722,
+      "column": 2351,
+      "rawDN": -20000
+    },
+    "available": true
+  },
+  "landingUTC": "2026-11-15T12:00:00Z",
+  "comparison": [
+    {
+      "stepSeconds": 60,
+      "solarEnergyWh": [
+        1632.454518494277,
+        7106.00129022983
+      ],
+      "batteryMinimumWh": [
+        10205.911073787893,
+        10800.0
+      ],
+      "sunVisibleH": [
+        5.253776041666665,
+        24.0
+      ]
+    },
+    {
+      "stepSeconds": 30,
+      "solarEnergyWh": [
+        1632.454715966643,
+        7106.0012902228555
+      ],
+      "batteryMinimumWh": [
+        10205.911197779698,
+        10800.0
+      ],
+      "sunVisibleH": [
+        5.253776041666665,
+        24.0
+      ]
+    }
+  ],
+  "maxSolarEnergyDifferenceWh": 0.0001974723661533062,
+  "maxBatteryMinimumDifferenceWh": 0.00012399180559441447
+}

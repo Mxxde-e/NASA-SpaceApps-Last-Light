@@ -1,0 +1,16 @@
+{
+  "status": "passed",
+  "checks": [
+    "metadata/frame",
+    "map PNG",
+    "out-of-footprint 422",
+    "missing job 404",
+    "below-resolution 422",
+    "unsupported time fails without result",
+    "real candidate job",
+    "mandatory ground yields zero qualification",
+    "version/hash matched repeat cache"
+  ],
+  "warmHorizonSearchSeconds": 32.05780650000088,
+  "repeatCacheSeconds": 0.1897506000022986
+}

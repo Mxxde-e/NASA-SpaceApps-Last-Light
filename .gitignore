@@ -147,3 +147,20 @@ vite.config.ts.timestamp-*
 
 # Turbo Repo
 .turbo
+
+# Last Light local data and runtime
+node_modules/
+dist/
+.sites/
+*.log
+.venv/
+data/
+backend/__pycache__/
+backend/tests/__pycache__/
+.pytest_cache/
+
+.openai/
+.env
+.env.*
+__pycache__/
+*.pyc

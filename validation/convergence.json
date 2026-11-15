@@ -1,0 +1,168 @@
+[
+  {
+    "id": "O",
+    "longitude": -137.50198,
+    "latitude": -89.46316,
+    "horizonDifference": {
+      "nominal": {
+        "maxDeg": 0.05590051709552335,
+        "p95Deg": 0.011446581622634523,
+        "radialMaxDeg": 0.05590051709552335
+      },
+      "low": {
+        "maxDeg": 0.10540065421999212,
+        "p95Deg": 0.02392191049558106,
+        "radialMaxDeg": 0.10502991039236398
+      },
+      "high": {
+        "maxDeg": 0.14268029744101884,
+        "p95Deg": 0.013689656226395666,
+        "radialMaxDeg": 0.13720566146000823
+      }
+    },
+    "baseMetrics": {
+      "sunVisibleH": [
+        24.0,
+        24.0
+      ],
+      "earthVisibleH": [
+        0.0,
+        0.0
+      ],
+      "sunUncertainH": 0.0,
+      "earthUncertainH": 0.0,
+      "longestDarkH": [
+        0.0,
+        0.0
+      ],
+      "longestEarthHiddenH": [
+        24.0,
+        24.0
+      ],
+      "darkTruncated": false,
+      "earthTruncated": true,
+      "batteryMinimumWh": [
+        10800.0,
+        10800.0
+      ],
+      "batteryMinimumPercent": [
+        90.0,
+        90.0
+      ]
+    },
+    "refinedMetrics": {
+      "sunVisibleH": [
+        24.0,
+        24.0
+      ],
+      "earthVisibleH": [
+        0.0,
+        0.0
+      ],
+      "sunUncertainH": 0.0,
+      "earthUncertainH": 0.0,
+      "longestDarkH": [
+        0.0,
+        0.0
+      ],
+      "longestEarthHiddenH": [
+        24.0,
+        24.0
+      ],
+      "darkTruncated": false,
+      "earthTruncated": true,
+      "batteryMinimumWh": [
+        10800.0,
+        10800.0
+      ],
+      "batteryMinimumPercent": [
+        90.0,
+        90.0
+      ]
+    },
+    "elapsedSeconds": 70.01707369999349
+  },
+  {
+    "id": "R3",
+    "longitude": -137.5733594631768,
+    "latitude": -89.4806345655543,
+    "horizonDifference": {
+      "nominal": {
+        "maxDeg": 0.041542277955668894,
+        "p95Deg": 0.012246756838229667,
+        "radialMaxDeg": 0.041542277955668894
+      },
+      "low": {
+        "maxDeg": 0.06408491572825947,
+        "p95Deg": 0.023170734911133382,
+        "radialMaxDeg": 0.06145117619627971
+      },
+      "high": {
+        "maxDeg": 0.08678009362580053,
+        "p95Deg": 0.013914637302947369,
+        "radialMaxDeg": 0.08678009362580053
+      }
+    },
+    "baseMetrics": {
+      "sunVisibleH": [
+        5.253824869791668,
+        24.0
+      ],
+      "earthVisibleH": [
+        0.0,
+        0.0
+      ],
+      "sunUncertainH": 18.746175130208332,
+      "earthUncertainH": 0.0,
+      "longestDarkH": [
+        0.0,
+        18.746175130208332
+      ],
+      "longestEarthHiddenH": [
+        24.0,
+        24.0
+      ],
+      "darkTruncated": true,
+      "earthTruncated": true,
+      "batteryMinimumWh": [
+        9862.691243489719,
+        10800.0
+      ],
+      "batteryMinimumPercent": [
+        82.18909369574764,
+        90.0
+      ]
+    },
+    "refinedMetrics": {
+      "sunVisibleH": [
+        5.274088541666668,
+        24.0
+      ],
+      "earthVisibleH": [
+        0.0,
+        0.0
+      ],
+      "sunUncertainH": 18.725911458333332,
+      "earthUncertainH": 0.0,
+      "longestDarkH": [
+        0.0,
+        18.725911458333332
+      ],
+      "longestEarthHiddenH": [
+        24.0,
+        24.0
+      ],
+      "darkTruncated": true,
+      "earthTruncated": true,
+      "batteryMinimumWh": [
+        9863.704427082652,
+        10800.0
+      ],
+      "batteryMinimumPercent": [
+        82.19753689235543,
+        90.0
+      ]
+    },
+    "elapsedSeconds": 86.04289279999648
+  }
+]
